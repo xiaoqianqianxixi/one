@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" >
+    <title>表单校验</title>
+    <script type="text/javascript" src="ajax.js"></script>
+    <script type="text/javascript">
+        function formcheck() {
+            var url = "FormCheck";
+            var params = "userid=" + userid.value + "&userpwd=" + "userpwd.value";
+            sendRequest(url, params, 'POST', showresult);
+        }
+        function showresult() {
+            if (xmlHttp_request.readyState == 4) {
+                if (xmlHttp_request.status == 200) {
+                    var info = xmlHttp_request.responseText;
+                    result.innerHTML = info;
+                }
+            }
+        }
+        function agecheck(){
+            var age=document.getElementById("age").value;
+            var agecheck=document.getElementById("agecheck");
+            if(/^(?:[1-9]?\d|100)$/.test(age)){
+                agecheck.innerHTML="年龄格式正确";
+            }
+            else{
+                agecheck.innerHTML="<font color='red'>年龄格式不正确<font>";
+            }
+        }
+        function pwdcheck(){
+            var pwd1=document.getElementById("pwd1").value;
+            var pwd2=document.getElementById("pwd2").value;
+            var pwd2check=document.getElementById("pwd2check");
+            if(pwd2!=pwd1){
+                pwd2check.innerHTML="<font color='red'>两次密码不一致<font>";
+            }
+            else{
+                pwd2check.innerHTML="两次密码一致";
+            }
+        }
+    </script>
+</head>
+<body>
+<table align="center" >
+    <tr>
+        <td><font style="font-family: '微软雅黑'">请输入用户名：</font></td>
+        <td><input type="text" name="userid" οnblur="formcheck()" /></td>
+        <td width="150px"><span id="result"></span></td>
+    </tr>
+    <tr>
+        <td><font style="font-family: '微软雅黑'">请输入密码：</font></td>
+        <td><input type="password" name="userpwd" id="pwd1"/></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><font style="font-family: '微软雅黑'">请再输密码：</font></td>
+        <td><input type="password" id="pwd2" οnblur="pwdcheck()"/></td>
+        <td><span id="pwd2check"></span></td>
+    </tr>
+    <tr>
+        <td><font style="font-family: '微软雅黑'">请输入年龄：</font></td>
+        <td><input type="text" id="age" οnblur="agecheck()"/></td>
+        <td><span id="agecheck"></span></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><input type="button" value="注册" οnclick="formcheck()"></td>
+    </tr>
+</table>
+</body>
+</html>

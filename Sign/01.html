@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登陆</title>
+    <style>
+        body,p,div,h6{
+            margin:0;padding:0;
+        }
+        #boxs{
+            width:600px;
+            height:800px;
+            margin:auto;
+            padding:20px;
+        }
+        #boxs >p{
+            display: inline-block;
+            font-size:18px;
+            margin: 30px 10px;
+        }
+        .d_n{
+            display:none;
+        }
+        .d_b{
+            display:block;
+        }
+        .sph{
+            font-size:12px;
+            color:red;
+        }
+        .sp{
+            font-size:12px;
+            color:green;
+        }
+        h6{
+            width:80px;
+            margin:auto;
+            font-size:26px;
+        }
+        input,button{
+            width:200px;
+            height:40px;
+            border-radius: 5px;
+            background:none;
+            outline:none;
+            border:1px solid #ccc;
+        }
+        .v_m{
+            vertical-align:middle;
+        }
+        /* 滑动模块的样式 */
+        #box{
+
+            display: inline-block;
+            width:230px;
+            height: 40px;
+            position: relative;
+            background: #ccc;
+            -webkit-touch-callout:none;
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
+        #box .btn{
+            width:40px;
+            height: 40px;
+            box-sizing: border-box;
+            border:1px solid #ccc;
+            text-align: center;
+            line-height: 38px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 3;
+            font-size: 25px;
+            background: #fff;
+            cursor: pointer;
+
+        }
+        #box .bg{
+            width: 0;
+            height: 100%;
+            background: rgb(4, 240, 36);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+        }
+        #box .text{
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            position: absolute;
+            line-height: 38px;
+            z-index: 2;
+            font-size: 16px;
+            left: 0;
+            top: 0;
+            margin: 0;
+        }
+
+
+        button{
+            background-color:#ccc;
+        }
+    </style>
+    <script>
+        //虚拟的用户名
+        //var userNameList =[a,b,c]
+    </script>
+</head>
+<body>
+    <div id="boxs">
+        <h6>注册</h6>
+        <p>姓名</p>
+        <input id="userName" class="in" type="text" placeholder="请输入用户名"><br>
+        <span class="sp d_n">正确</span>
+        <p>账号</p>
+        <input id="number" class="in" type="text" placeholder="请输入账号"><br>
+        <span class="sp d_n">正确</span>
+        <p>密码</p>
+        <input id="password" class="in" type="password" placeholder="请输入密码">
+        <span class="sp1"></span><br>
+        <p>确认密码</p>
+        <input id="password2" type="password" placeholder="请再次输入密码">
+        <span class="p_sp"></span><br>
+        <p class="v_m">滑动验证</p>
+        <div id="box" class="v_m">
+            <div class="btn">》</div>
+            <p class="text">拖动滑块验证</p>
+            <div class="bg"></div>
+        </div><br>
+        <p>电话号码</p>
+        <input id="phone" type="" placeholder="请输入11位电话号码">
+        <span class="phone2"></span>
+        <input  class="d_n but btn2" type="button" value="获取验证码"><br>
+        <button id="register">注册</button>
+    </div>
+</body>
+
+<script>
+    (function(){
+        let oUserName=document.getElementById('userName'),
+        oNumber=document.getElementById('number'),
+        oPassword=document.getElementById('password'),
+        oPassword2=document.getElementById('password2'),
+        oIn=document.getElementsByClassName('in'),
+        oPhone=document.getElementById('phone');
+        (function(){
+            let oPSp=document.getElementsByClassName('p_sp')[0];
+            oPassword.onblur=function(){
+                fn(oPassword.value)
+            }  
+            function fn(pwd){
+                let oSp1=document.getElementsByClassName('sp1')[0];
+                let reg=/^[\w]{6,16}$/i,//判断密码格式是否正确
+                    reg1 = /[a-zA-Z]/,//字母
+                    reg2 = /\d/,//数字
+                    reg3 = /_/;//下划线
+                if(!reg.test(pwd)){
+                    //密码格式不正确
+                    oSp1.innerText='错误';
+                    oSp1.classList.remove('sp');
+                    oSp1.classList.add('sph');
+                }
+                if(reg.test(pwd)){//密码格式正确的情况下
+			        if(reg1.test(pwd)&&reg2.test(pwd)&&reg3.test(pwd)){
+				    //高级密码
+                    oSp1.innerText='密码安全度高级';
+                    oSp1.classList.add('sp');
+			    }else if(reg1.test(pwd)&&reg2.test(pwd)){
+				    //中级密码
+                    oSp1.innerText='密码安全度中级';
+                    oSp1.classList.add('sp');
+			    }else if(reg1.test(pwd)||reg2.test(pwd)){
+				    //低级密码
+                    oSp1.innerText='密码安全度底';
+                    oSp1.classList.add('sp');
+			        }
+		        }
+
+            }     
+            oPassword2.onblur=function(){
+                
+                if(oPassword2.value===oPassword.value){
+                    oPSp.innerHTML="正确";
+                    oPSp.classList.add('sp');
+                    if(oPassword2.value==''){
+                        oPSp.innerHTML="错误";
+                        oPSp.classList.remove('sp');
+                        oPSp.classList.add('sph');
+                    }
+                }else{
+                    oPSp.innerHTML="错误"
+                    oPSp.classList.add('sph')
+                }
+            }
+        })();
+        oPhone.onblur=function(){
+            checkPhone()
+        }
+        
+    })();
+    window.onload=function(){
+    //事件:滑块1.按下  onmousedown
+        //2.拖动 onmousemove
+        //3.松开 onmouseup
+        let flag=false; //处理验证是否通过  默认是不通过
+        let box=document.getElementById('box');//大盒子
+        let btn=document.getElementsByClassName('btn')[0];//滑块
+        let text=document.getElementsByClassName('text')[0];//文字
+        let bg=document.getElementsByClassName('bg')[0];//背景
+        
+        //按下
+        btn.onmousedown=function(e){
+            let downX=e.clientX; //按下按钮后与窗口的x轴间距
+            //移动
+            btn.onmousemove=function(e){
+                let moveX=e.clientX-downX; //滑动的时候距离窗口的x轴的间距  滑动的x-按下的x             
+                //只有在大于0的时候才拖动
+                if(moveX>0){
+                    btn.style.left=moveX+'px';//滑块与左边的距离
+                    bg.style.width=moveX+'px'; //背景的宽度就是滑块距离左边的位置
+                    //验证成功 条件 不能> 盒子的宽度-滑块的宽度 
+                    if(moveX>=(box.offsetWidth-btn.offsetWidth)){
+                        text.innerText='验证成功';
+                        text.style.color='#fff';
+                        btn.onmousemove=null; //清除拖动事件
+                        btn.onmousedown=null; //清除按下事件
+                        flag=true; //通过的时候设置为true
+                        oButfn(flag)
+                    }
+                }
+                
+            }
+        }
+        function oButfn(flag){
+            //按钮
+            let oBut=document.getElementsByClassName('but')[0];
+            if(flag){
+                oBut.classList.remove('d_n');
+                
+            }
+        }
+        //倒计时
+        
+        //松开
+        btn.onmouseup=function(){
+            //为假的时候
+            if(flag==false){
+                btn.onmousemove=null;//清除事件
+                btn.style.left=0;
+                bg.style.width=0;
+            }
+            
+        }
+    }
+    function checkPhone(){ 
+        let phone = document.getElementById('phone').value;
+        let ophone2=document.getElementsByClassName('phone2')[0];
+        if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))){
+            ophone2.innerText="错误";
+            ophone2.classList.remove('sp');
+            ophone2.classList.add('sph');
+            return false; 
+        } 
+        if((/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))){
+            ophone2.innerText="正确";
+            ophone2.classList.remove('sph');
+            ophone2.classList.add('sp');
+            butTime();
+            return false; 
+        } 
+    };
+    function butTime(){
+              //发送验证码按钮的60s倒计时
+            let countdown = 60;
+            let mfbtn=document.getElementsByClassName('btn2')[0];
+            mfbtn.style.background='#0af';
+            mfbtn.style.border='none';
+            mfbtn.style.borderRadius='5px';
+            mfbtn.style.height='30px';
+            mfbtn.style.color='#fff';
+            function settime(obj) {
+                if (countdown == 0) {
+                    obj.disabled=false;
+                    obj.value="免费获取验证码";
+                    countdown = 60;
+                    return;
+                } else {
+                obj.disabled=true
+                obj.value="重新发送" + countdown
+                countdown--;
+                mfbtn.style.background='#999';
+            }
+            setTimeout(function() {
+                settime(obj);
+            }, 1000)
+        };
+
+        mfbtn.onclick=function () {
+            settime(mfbtn);
+        };
+        }
+    (function(){
+        let but=document.getElementById('register');
+        let oUserName=document.getElementById('userName'),//姓名
+                oNumber=document.getElementById('number'),//账号
+                oPassword=document.getElementById('password'),//密码
+                oPhone=document.getElementById('phone');//电话
+        but.onclick=function(){
+            let user=oUserName.value,
+                num=oNumber.value,
+                pas=oPassword.value,
+                phone=oPhone.value;
+
+            let str='';
+            str+=`user=${user}num=${num}pas=${pas}phone=${phone}`;
+            console.log(str);
+            let xhr=new XMLHttpRequest();
+            xhr.open('get',"路径"+str);
+            xhr.send();
+            //创建回调函数
+            xhr.onload=function(){
+                if(xhr.readyState!==4)return;
+                if(xhr.status>=200&&xhr.status<300||xhr.status===304){
+                    console.log(JSON.parse(xhr.responseText));
+                    let msg=JSON.parse(xhr.responseText);
+                    alert(msg.msg)
+                }
+            }
+
+
+        }
+    })();
+
+</script>
+</html>
